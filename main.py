@@ -26,6 +26,7 @@ except ModuleNotFoundError:
     os.system('pip install asyncio')
     os.system('pip install tkinter')
     os.system('pip install keyboard')
+    os.system('pip install aiohttp')
 
 from tls_client import Session
 from json import dumps
