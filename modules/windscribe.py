@@ -7,7 +7,7 @@ import threading
 from random import choice
 import os
 from colorama import Fore, Style
-
+#Windscribe
 max_threads = 400
 account_count = 0
 valid = 0
