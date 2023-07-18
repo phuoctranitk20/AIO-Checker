@@ -121,27 +121,4 @@ while threading.active_count() > 1:
 
 print(f'Successfully checked {account_count} accounts.')
 
-def process_account(email, password):
-    while threading.active_count() > max_threads:
-        pass
 
-    proxy = choice(proxies)
-    threading.Thread(target=check, args=(email, password, proxy)).start()
-
-
-with open('combos.txt', 'r', encoding='latin-1') as file:
-    accounts = [line.strip().split(':') for line in file]
-
-with open('proxies.txt', 'r') as file:
-    proxies = [line.strip() for line in file]
-
-if not os.path.exists('Checked/WindScribe'):
-    os.makedirs('Checked/WindScribe')
-
-for email, password in accounts:
-    process_account(email, password)
-
-while threading.active_count() > 1:
-    pass
-
-print(f'Successfully checked {account_count} accounts.')
