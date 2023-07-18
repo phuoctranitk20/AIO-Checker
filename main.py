@@ -211,11 +211,18 @@ def menu():
         proxy_error = modules.steam.proxy_error
     elif opc=="9":
         import modules.windscribe
+    elif opc=="10":
+        import modules.hbo
+
     else:
         System.Clear()
         menu()
 
     def finish_ui():
+        valid_accs = 0
+        invalid_accs = 0
+        custom_accs = 0
+        proxy_error = 0
         ctypes.windll.kernel32.SetConsoleTitleW(f'『 Phantom AIO 』 ~ Made By H4cK3dR4Du, yasufake & tupadre | .gg/nebularw - .gg/pandasmurfs | Accounts : [ {accs} ] ~ Proxies : [ {proxies} ] | Checker Stats')
         System.Clear()
         Write.Print(f"""
