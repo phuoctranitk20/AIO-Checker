@@ -77,15 +77,14 @@ def get_time_rn():
     return timee
 
 def capture_remover():
-    with open("combos.txt", "r") as file:
-        with open("accounts_modified.txt", "w") as new_file:
+    with open('combos.txt', 'r', encoding='latin-1', errors='replace') as file:
+        with open("accounts_modified.txt", "w", encoding='utf-8') as new_file:
             for line in file:
                 line = line.strip()
-                line = line.split(" ")[0]
-                email, password = line.split(":")
-                modified_line = f"{email}:{password}\n"
-                new_file.write(modified_line)
-
+                if ':' in line:
+                    email, password = line.split(":", 1)
+                    modified_line = f"{email}:{password}\n"
+                    new_file.write(modified_line)
     os.replace("accounts_modified.txt", "combos.txt")
 
 capture_remover()
@@ -134,7 +133,7 @@ def check_proxies_file():
 
 check_proxies_file()
 
-accs = len(open('combos.txt').readlines())
+accs = len(open('combos.txt', 'r', encoding='latin-1').readlines())
 proxies = len(open('proxies.txt').readlines())
 
 def menu():

