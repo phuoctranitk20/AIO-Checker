@@ -154,8 +154,8 @@ def menu():
                                             [ Welcome {username} | {formated_date} ]\n
 ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
     \t(1) Netflix Checker\t\t\t(10) Facebook Checker
-    \t(2) IPVanish Checker
-    \t(3) Crunchyroll Checker
+    \t(2) IPVanish Checker\t\t\t(11) HBO Checker
+    \t(3) Crunchyroll Checker\t\t\t(12) Hulu Checker
     \t(4) Discord Token Checker
     \t(5) Disney+ Checker
     \t(6) Discord Nitro Checker
@@ -215,8 +215,11 @@ def menu():
     elif opc=="9":
         import modules.windscribe
     elif opc=="10":
+        import modules.facebook
+    elif opc=="11":
         import modules.hbo
-
+    elif opc=="12":
+        import modules.hulu
     else:
         System.Clear()
         menu()
