@@ -1,5 +1,3 @@
-# File: modules/hbo.py
-
 import threading
 from pathlib import Path
 from random import choices, randint, choice
@@ -238,4 +236,3 @@ def start(account_list):
             pass
         threading.Thread(target=start_checker, args=(account,)).start()
         print("Finished checking all accounts.")
-

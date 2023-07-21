@@ -1,5 +1,7 @@
 import os, sys, time, json, random, string, logging, getpass, ctypes, concurrent.futures, threading
 
+from modules import disney
+
 try:
     import tls_client
     import pystyle
@@ -12,9 +14,11 @@ try:
     import httpx
     import asyncio
     import tkinter as tk
+    import asyncio
     import keyboard
 except ModuleNotFoundError:
     os.system('pip install tls_client')
+    os.system('pip install asyncio')
     os.system('pip install pystyle')
     os.system('pip install colorama')
     os.system('pip install requests')
@@ -189,8 +193,7 @@ def menu():
         custom_accs = modules.discord_token.custom
         proxy_error = modules.discord_token.proxy_error
     elif opc=="5":
-        import modules.disney
-
+        asyncio.run(disney.disney_main())
     elif opc=="6":
         import modules.discord_nitro
         valid_accs = modules.discord_nitro.valid
