@@ -16,6 +16,8 @@ try:
     import tkinter as tk
     import asyncio
     import keyboard
+    import aiohttp
+    import pystyle
 except ModuleNotFoundError:
     os.system('pip install tls_client')
     os.system('pip install asyncio')
@@ -54,9 +56,15 @@ gray = Fore.LIGHTBLACK_EX + Fore.WHITE
 reset = Fore.RESET
 pink = Fore.LIGHTGREEN_EX + Fore.LIGHTMAGENTA_EX
 dark_green = Fore.GREEN + Style.BRIGHT
+def resource_path(relative_path):
+    if getattr(sys, 'frozen', False):  # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.path.abspath(".")
 
+    return os.path.join(base_path, relative_path)
 def message():
-    txt = "modules/ignore.txt"
+    txt = resource_path("modules/ignore.txt")
     if os.path.exists(txt):
         return
     root = tk.Tk()
@@ -81,24 +89,24 @@ def get_time_rn():
     return timee
 
 def capture_remover():
-    with open('combos.txt', 'r', encoding='latin-1', errors='replace') as file:
-        with open("accounts_modified.txt", "w", encoding='utf-8') as new_file:
+    with open(resource_path('combos.txt'), 'r', encoding='latin-1', errors='replace') as file:
+        with open(resource_path("accounts_modified.txt"), "w", encoding='utf-8') as new_file:
             for line in file:
                 line = line.strip()
                 if ':' in line:
                     email, password = line.split(":", 1)
                     modified_line = f"{email}:{password}\n"
                     new_file.write(modified_line)
-    os.replace("accounts_modified.txt", "combos.txt")
+    os.replace(resource_path("accounts_modified.txt"), resource_path("combos.txt"))
 
 capture_remover()
 
 def save_proxies(proxies):
-    with open("proxies.txt", "w") as file:
+    with open(resource_path("proxies.txt"), "w") as file:
         file.write("\n".join(proxies))
 
 def get_proxies():
-    with open('proxies.txt', 'r', encoding='utf-8') as f:
+    with open(resource_path('proxies.txt'), 'r', encoding='utf-8') as f:
         proxies = f.read().splitlines()
     if not proxies:
         proxy_log = {}
@@ -131,14 +139,14 @@ def get_proxies():
         get_proxies()
 
 def check_proxies_file():
-    file_path = "proxies.txt"
+    file_path = resource_path("proxies.txt")
     if os.path.exists(file_path) and os.path.getsize(file_path) == 0:
         get_proxies()
 
 check_proxies_file()
 
-accs = len(open('combos.txt', 'r', encoding='latin-1').readlines())
-proxies = len(open('proxies.txt').readlines())
+accs = len(open(resource_path('combos.txt'), 'r', encoding='latin-1').readlines())
+proxies = len(open(resource_path('proxies.txt')).readlines())
 
 def menu():
     ctypes.windll.kernel32.SetConsoleTitleW(f'『 Phantom AIO 』 ~ Made By H4cK3dR4Du, yasufake & tupadre | .gg/nebularw - .gg/pandasmurfs | Accounts : [ {accs} ] ~ Proxies : [ {proxies} ]')

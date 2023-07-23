@@ -86,11 +86,13 @@ async def disney_checker(session, email, password):
             if ":" in proxy and len(proxy.split(":")) == 4:
                 ip, port, user, pw = proxy.split(":")
                 proxy_string = f"http://{user}:{pw}@{ip}:{port}"
+                proxy_auth = aiohttp.BasicAuth(login=user, password=pw)  # Only assign when authentication is needed
             else:
                 ip, port = proxy.split(":")
                 proxy_string = f"http://{ip}:{port}"
+                proxy_auth = None  # No authentication required
 
-            proxy_auth = aiohttp.BasicAuth(login=user, password=pw)
+            
             payload = {
                 "deviceFamily": "browser",
                 "applicationRuntime": "chrome",
