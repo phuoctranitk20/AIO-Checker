@@ -118,7 +118,7 @@ async def disney_checker(session, email, password):
                     "x-bamsdk-platform": "windows",
                     "x-bamsdk-version": "4.16",
                 }
-                print(f"Starting check for {email}")
+                #print(f"Starting check for {email}")
                 async with session.post('https://global.edge.bamgrid.com/devices', json=payload, headers=headers,
                                     proxy=proxy_string, proxy_auth=proxy_auth) as r:
                     if r.status == 403:
