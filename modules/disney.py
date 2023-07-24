@@ -363,7 +363,7 @@ async def disney_checker(session, email, password):
                     #traceback.print_exc()
 
 async def disney_checker_task(email: str, password: str):
-    retries = 5
+    retries = 10
     timeout = 10
 
     for _ in range(retries):
@@ -383,7 +383,7 @@ async def disney_main():
     tasks = []
 
     for account in accounts:
-        email, password = account.split(':')
+        email, password = account.rsplit(':', 1)
         task = asyncio.create_task(disney_checker_task(email, password))
         tasks.append(task)
 

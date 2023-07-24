@@ -176,6 +176,6 @@ def start_threads():
     for thread in threads:
         thread.join()
 
-max_threads = 500
+max_threads = 150
 
 start_threads()
